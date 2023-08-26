@@ -1,27 +1,26 @@
 package com.github.malyshevhen;
 
+import com.github.malyshevhen.build.BuildCommand;
+import com.github.malyshevhen.scan.ScanCommand;
 import io.micronaut.configuration.picocli.PicocliRunner;
-import io.micronaut.context.ApplicationContext;
-
-import picocli.CommandLine;
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Option;
-import picocli.CommandLine.Parameters;
+import picocli.CommandLine.Mixin;
 
 @Command(name = "odabagen", description = "...",
-        mixinStandardHelpOptions = true)
+        mixinStandardHelpOptions = true,
+        subcommands = {ScanCommand.class, BuildCommand.class})
 public class OdabagenCommand implements Runnable {
 
-    @Option(names = {"-v", "--verbose"}, description = "...")
-    boolean verbose;
+    @Mixin
+    GlobalOptions globalOptions;
 
     public static void main(String[] args) throws Exception {
         PicocliRunner.run(OdabagenCommand.class, args);
     }
 
     public void run() {
-        // business logic here
-        if (verbose) {
+        /* business logic here */
+        if (globalOptions.isVerbose()) {
             System.out.println("Hi!");
         }
     }
